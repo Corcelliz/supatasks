@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#3ecf8e">
+  <title>Supatasks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Supatasks</h1>
+    <p id="erro" role="alert"></p>
+
+    <!-- Tela 1: login (só o admin tem conta) -->
+    <section id="tela-login" hidden>
+      <form id="form-login" class="cartao">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" autocomplete="current-password" required>
+        <button>Entrar</button>
+      </form>
+    </section>
+
+    <!-- Tela 2: tarefas (aparece depois do login) -->
+    <section id="tela-app" hidden>
+      <div class="topo">
+        <span id="quem"></span>
+        <button id="sair" class="secundario">Sair</button>
+      </div>
+
+      <form id="form" class="linha">
+        <label for="titulo" class="so-leitor">Nova tarefa</label>
+        <input id="titulo" placeholder="O que precisa fazer?" maxlength="200" required autocomplete="off">
+        <button>Adicionar</button>
+      </form>
+
+      <ul id="lista"></ul>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <!-- config.js fica fora do git: copie de config.example.js -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
