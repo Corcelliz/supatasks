@@ -30,7 +30,9 @@ document.getElementById('sair').onclick = () => db.auth.signOut();
 db.auth.onAuthStateChange((_evento, sessao) => {
   telaLogin.hidden = !!sessao;
   telaApp.hidden = !sessao;
-  document.getElementById('quem').textContent = sessao ? sessao.user.email : '';
+  const email = sessao ? sessao.user.email : '';
+  document.getElementById('quem').textContent = email;
+  document.getElementById('avatar').textContent = email.charAt(0).toUpperCase();
   if (sessao) setTimeout(carregar, 0); // fora do callback, como a doc do Supabase recomenda
   else lista.replaceChildren();
 });
@@ -39,7 +41,14 @@ db.auth.onAuthStateChange((_evento, sessao) => {
 async function carregar() {
   const { data, error } = await db.from('tarefas').select('*').order('criado_em', { ascending: false });
   mostrarErro(error);
-  lista.replaceChildren(...(data ?? []).map(criarItem));
+  const tarefas = data ?? [];
+  lista.replaceChildren(...tarefas.map(criarItem));
+
+  // Contador, barra de progresso e mensagem de lista vazia
+  const feitas = tarefas.filter((t) => t.feita).length;
+  document.getElementById('vazio').hidden = tarefas.length > 0;
+  document.getElementById('resumo').textContent = tarefas.length ? `${feitas} de ${tarefas.length} concluídas` : '';
+  document.getElementById('barra').style.width = tarefas.length ? `${(feitas / tarefas.length) * 100}%` : '0';
 }
 
 // Monta um <li>. textContent (nunca innerHTML) impede que o texto digitado vire HTML (XSS).
@@ -57,7 +66,7 @@ function criarItem(tarefa) {
   texto.textContent = tarefa.titulo;
 
   const apagar = document.createElement('button');
-  apagar.textContent = 'Apagar';
+  apagar.textContent = '✕';
   apagar.className = 'perigo';
   apagar.setAttribute('aria-label', 'Apagar: ' + tarefa.titulo);
   apagar.onclick = () => remover(tarefa.id);

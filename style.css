@@ -1,16 +1,31 @@
 /* Cores em variáveis: para mudar o visual, mexa só aqui */
 :root {
-  --fundo: #f5f5f7;
-  --cartao: #fff;
-  --texto: #1d1d1f;
-  --suave: #6e6e73;
-  --borda: #d2d2d7;
-  --destaque: #3ecf8e; /* verde do Supabase */
-  --perigo: #d93025;
-  --toque: 44px;       /* tamanho mínimo confortável para o dedo */
+  --fundo: #f3f6f4;
+  --brilho: rgba(62, 207, 142, .18); /* mancha verde no topo do fundo */
+  --cartao: #ffffff;
+  --campo: #f6f8f7;
+  --texto: #14201a;
+  --suave: #5f6d66;
+  --borda: #dde5e0;
+  --destaque: #3ecf8e;  /* verde do Supabase */
+  --destaque-forte: #24b47e;
+  --perigo: #e5484d;
+  --sombra: 0 1px 2px rgba(16, 24, 20, .04), 0 8px 24px rgba(16, 24, 20, .06);
+  --raio: 16px;
+  --toque: 44px;        /* tamanho mínimo confortável para o dedo */
 }
 @media (prefers-color-scheme: dark) {
-  :root { --fundo: #161618; --cartao: #232326; --texto: #f5f5f7; --suave: #a1a1a6; --borda: #3a3a3c; --perigo: #ff6b5e; }
+  :root {
+    --fundo: #0f1512;
+    --brilho: rgba(62, 207, 142, .12);
+    --cartao: #171f1b;
+    --campo: #1d2621;
+    --texto: #e8efeb;
+    --suave: #93a19a;
+    --borda: #2a3530;
+    --perigo: #ff6b6f;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+  }
 }
 
 * { box-sizing: border-box; }
@@ -18,56 +33,141 @@
 
 body {
   margin: 0; min-height: 100dvh;
-  background: var(--fundo); color: var(--texto);
-  font: 16px/1.4 system-ui, sans-serif;
+  background: radial-gradient(900px 420px at 50% -120px, var(--brilho), transparent 70%), var(--fundo);
+  color: var(--texto);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 /* env(safe-area-*) respeita o "notch" e a barra de gestos dos celulares */
 main {
-  max-width: 480px; margin: 0 auto;
-  padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
-           max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  max-width: 520px; margin: 0 auto;
+  padding: max(40px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
 }
-h1 { font-size: 1.75rem; margin: 0 0 8px; }
 
+/* ---------- Marca ---------- */
+.marca { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.logo {
+  display: grid; place-items: center; flex: none;
+  width: 44px; height: 44px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--destaque), var(--destaque-forte));
+  color: #04140c; box-shadow: 0 6px 18px rgba(62, 207, 142, .35);
+}
+h1 { font-size: 1.6rem; line-height: 1.1; margin: 0; letter-spacing: -.02em; }
+.sub { margin: 2px 0 0; color: var(--suave); font-size: .95rem; }
+
+/* ---------- Cartão ---------- */
+.cartao {
+  display: grid; gap: 10px; padding: 24px;
+  background: var(--cartao); border: 1px solid var(--borda);
+  border-radius: var(--raio); box-shadow: var(--sombra);
+}
+.cartao h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.01em; }
+.dica { margin: -4px 0 8px; color: var(--suave); font-size: .9rem; }
+.cartao label { font-size: .85rem; font-weight: 600; color: var(--suave); margin-top: 4px; }
+#form-login button { margin-top: 12px; }
+
+/* ---------- Campos e botões ---------- */
 /* font-size 16px nos campos evita o zoom automático do iPhone ao tocar */
 input:not([type=checkbox]) {
-  width: 100%; min-height: var(--toque); padding: 10px 12px;
+  width: 100%; min-height: var(--toque); padding: 10px 14px;
   font: inherit; font-size: 16px; color: inherit;
-  background: var(--cartao); border: 1px solid var(--borda); border-radius: 10px;
+  background: var(--campo); border: 1px solid var(--borda); border-radius: 12px;
+  transition: border-color .15s, box-shadow .15s, background .15s;
 }
+input::placeholder { color: var(--suave); opacity: .7; }
+input:not([type=checkbox]):focus {
+  outline: none; background: var(--cartao);
+  border-color: var(--destaque); box-shadow: 0 0 0 4px rgba(62, 207, 142, .2);
+}
+
 button {
-  min-height: var(--toque); padding: 10px 16px;
-  font: inherit; font-weight: 600; border: 0; border-radius: 10px; cursor: pointer;
-  background: var(--destaque); color: #000; touch-action: manipulation;
+  min-height: var(--toque); padding: 10px 18px;
+  font: inherit; font-weight: 600; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--destaque); color: #04140c; touch-action: manipulation;
+  transition: background .15s, transform .1s, box-shadow .15s;
 }
+button:hover { background: var(--destaque-forte); }
 button:active { transform: scale(.97); }
-button.secundario { background: none; color: var(--suave); border: 1px solid var(--borda); }
-button.perigo { background: none; color: var(--perigo); padding: 10px; }
+button.secundario { background: transparent; color: var(--suave); border: 1px solid var(--borda); padding: 8px 14px; }
+button.secundario:hover { color: var(--texto); background: var(--campo); }
 :focus-visible { outline: 2px solid var(--destaque); outline-offset: 2px; }
 
-.cartao { display: grid; gap: 8px; padding: 16px; background: var(--cartao); border-radius: 14px; }
-.cartao label { font-size: .9rem; color: var(--suave); }
-.cartao button { margin-top: 8px; }
+/* ---------- Topo (usuário logado) ---------- */
+.topo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.avatar {
+  display: grid; place-items: center; flex: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--campo); border: 1px solid var(--borda);
+  font-weight: 700; color: var(--destaque-forte);
+}
+#quem { flex: 1; color: var(--suave); font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.topo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-#quem { color: var(--suave); font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
+/* ---------- Nova tarefa ---------- */
 .linha { display: flex; gap: 8px; }
 /* Celular estreito: campo e botão empilhados, botão na largura toda */
 @media (max-width: 400px) {
   .linha { flex-direction: column; }
 }
 
-ul { list-style: none; padding: 0; margin: 16px 0; }
+/* ---------- Progresso ---------- */
+.progresso { display: grid; gap: 6px; margin-top: 8px; }
+#resumo { font-size: .85rem; color: var(--suave); }
+#resumo:empty, #resumo:empty + .trilho { display: none; }
+.trilho { height: 6px; border-radius: 99px; background: var(--campo); overflow: hidden; }
+.barra { height: 100%; width: 0; border-radius: inherit; background: var(--destaque); transition: width .35s ease; }
+
+/* ---------- Lista ---------- */
+ul { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 6px; }
 li {
   display: flex; align-items: center; gap: 12px;
-  padding: 6px 6px 6px 14px; margin-bottom: 8px;
-  background: var(--cartao); border-radius: 12px;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid var(--borda); border-radius: 12px;
+  transition: background .15s, border-color .15s;
+  animation: entrar .2s ease-out;
 }
-li input[type=checkbox] { width: 22px; height: 22px; flex: none; accent-color: var(--destaque); }
-li span { flex: 1; overflow-wrap: anywhere; }
+li:hover { background: var(--campo); }
+li span { flex: 1; overflow-wrap: anywhere; transition: color .15s; }
 li.feita span { text-decoration: line-through; color: var(--suave); }
 
-#erro { color: var(--perigo); min-height: 1.4em; margin: 0 0 8px; }
+/* Caixa de seleção redonda e personalizada */
+li input[type=checkbox] {
+  appearance: none; -webkit-appearance: none; margin: 0; flex: none; cursor: pointer;
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid var(--borda); background: var(--cartao);
+  display: grid; place-items: center; transition: background .15s, border-color .15s;
+}
+li input[type=checkbox]::after {
+  content: ""; width: 6px; height: 11px; margin-top: -2px;
+  border: solid #04140c; border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) scale(0); transition: transform .15s;
+}
+li input[type=checkbox]:hover { border-color: var(--destaque); }
+li input[type=checkbox]:checked { background: var(--destaque); border-color: var(--destaque); }
+li input[type=checkbox]:checked::after { transform: rotate(45deg) scale(1); }
+
+/* Botão apagar: discreto, aparece com destaque no hover */
+button.perigo {
+  background: transparent; color: var(--suave);
+  width: var(--toque); padding: 0; font-size: 1rem; font-weight: 500;
+}
+button.perigo:hover { color: var(--perigo); background: rgba(229, 72, 77, .1); }
+
+.vazio { margin: 12px 0 4px; text-align: center; color: var(--suave); font-size: .95rem; }
+
+/* ---------- Mensagem de erro ---------- */
+#erro {
+  margin: 0 0 14px; padding: 10px 14px; border-radius: 12px;
+  color: var(--perigo); background: rgba(229, 72, 77, .1); border: 1px solid rgba(229, 72, 77, .25);
+  font-size: .9rem;
+}
+#erro:empty { display: none; }
+
 .so-leitor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@keyframes entrar { from { opacity: 0; transform: translateY(-4px); } }
+/* Quem pede menos movimento no sistema não vê animações */
+@media (prefers-reduced-motion: reduce) {
+  *, *::after { animation: none !important; transition: none !important; }
+}

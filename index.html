@@ -3,22 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#3ecf8e">
+  <meta name="theme-color" content="#0f1512" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3f6f4" media="(prefers-color-scheme: light)">
   <title>Supatasks</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
-    <h1>Supatasks</h1>
+    <header class="marca">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <div>
+        <h1>Supatasks</h1>
+        <p class="sub">Suas tarefas, sincronizadas na nuvem.</p>
+      </div>
+    </header>
+
     <p id="erro" role="alert"></p>
 
     <!-- Tela 1: login (só o admin tem conta) -->
     <section id="tela-login" hidden>
       <form id="form-login" class="cartao">
+        <h2>Entrar</h2>
+        <p class="dica">Acesso restrito ao administrador.</p>
         <label for="email">E-mail</label>
-        <input id="email" type="email" autocomplete="username" required>
+        <input id="email" type="email" autocomplete="username" placeholder="voce@exemplo.com" required>
         <label for="senha">Senha</label>
-        <input id="senha" type="password" autocomplete="current-password" required>
+        <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required>
         <button>Entrar</button>
       </form>
     </section>
@@ -26,17 +38,26 @@
     <!-- Tela 2: tarefas (aparece depois do login) -->
     <section id="tela-app" hidden>
       <div class="topo">
+        <span class="avatar" id="avatar" aria-hidden="true"></span>
         <span id="quem"></span>
         <button id="sair" class="secundario">Sair</button>
       </div>
 
-      <form id="form" class="linha">
-        <label for="titulo" class="so-leitor">Nova tarefa</label>
-        <input id="titulo" placeholder="O que precisa fazer?" maxlength="200" required autocomplete="off">
-        <button>Adicionar</button>
-      </form>
+      <div class="cartao">
+        <form id="form" class="linha">
+          <label for="titulo" class="so-leitor">Nova tarefa</label>
+          <input id="titulo" placeholder="O que precisa fazer?" maxlength="200" required autocomplete="off">
+          <button>Adicionar</button>
+        </form>
 
-      <ul id="lista"></ul>
+        <div class="progresso" aria-live="polite">
+          <span id="resumo"></span>
+          <div class="trilho"><div class="barra" id="barra"></div></div>
+        </div>
+
+        <ul id="lista"></ul>
+        <p id="vazio" class="vazio" hidden>Nenhuma tarefa por aqui. Que tal adicionar a primeira?</p>
+      </div>
     </section>
   </main>
 
