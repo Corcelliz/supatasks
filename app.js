@@ -21,7 +21,9 @@ document.getElementById('form-login').onsubmit = async (e) => {
     email: document.getElementById('email').value.trim(),
     password: document.getElementById('senha').value,
   });
-  mostrarErro(error && 'E-mail ou senha inválidos.');
+  // Só troca a mensagem quando o problema é mesmo credencial; outros erros (e-mail não confirmado,
+  // projeto fora do ar, rede) aparecem como vieram, para não esconder a causa real.
+  mostrarErro(error && (error.code === 'invalid_credentials' ? 'E-mail ou senha inválidos.' : error));
 };
 
 document.getElementById('sair').onclick = () => db.auth.signOut();
